@@ -1,0 +1,36 @@
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package escola;
+
+/**
+ *
+ * @author Luma
+ */
+public class Escola {
+    public static void main(String[] args) {
+        Entrada io = new Entrada();
+        Sistema s = new Sistema();
+
+        int op = io.menu();
+
+        while (op != 0) {
+            if (op == 1) {
+                io.cadProf(s);
+            }
+            if (op == 2) {
+                io.cadAluno(s);
+            }
+            if (op == 3) {
+                io.cadTurma(s);
+            }
+            if (op == 4) {
+                s.listarTurmas();
+            }
+
+            op = io.menu();
+        }
+    }
+}
