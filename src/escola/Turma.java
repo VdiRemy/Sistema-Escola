@@ -18,13 +18,26 @@ public class Turma {
     private ArrayList<Aluno> alunos;
     private ArrayList<Avaliacao> avs;
     
+    public String getNomeTurma() {
+        return nome;
+    }
+    public int getAno() {
+        return ano;
+    }
+    public int getSem() {
+        return sem;
+    }
+    public ArrayList<Aluno> getAlunos() {
+        return alunos;
+    }
+    
     public Turma(String nome,int Ano,int sem,Professor prof,ArrayList<Aluno>alunos,ArrayList<Avaliacao>avs) {
         this.nome=nome;
         this.ano=Ano;
         this.sem=sem;
         this.prof=prof;
         this.alunos=alunos;
-        this.avs=avs;
+        this.avs=new ArrayList<>();
     }
 
     Turma(String nome, int ano, int sem, Professor prof, ArrayList<Aluno> alunosTurma, Prova prova) {
@@ -40,12 +53,18 @@ public class Turma {
     public void medias() {
         System.out.println("Médias da turma " + this.nome + " (" + this.ano + "/" +this.sem + ")" + " :");
         for (Aluno a : this.alunos) {
-            AlunoProva ap = new AlunoProva(a, new ArrayList<>());
+            double total = 0;
+            int count = 0;
             for (Avaliacao av : this.avs) {
-                ap.getNotas().add(av.getNota(a));
+                double nota = av.nota(a.getCpf());
+                if (nota > 0) {
+                    total += nota;
+                    count++;
+                }
             }
-            System.out.println("Média do aluno " + a.getNome() + ": " + ap.media());
         }
-        System.out.println("Média da turma " + this.nome + ": " + mediaTurma());
     }
+
+    //getter turma
+    
 }

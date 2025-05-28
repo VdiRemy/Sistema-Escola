@@ -14,10 +14,12 @@ import java.util.List;
 public class Sistema {
     private List<Professor> profs;
     private List<Aluno> alunos;
+    private List<Turma> turmas;
 
     public Sistema() {
         this.profs = new ArrayList<>();
-        this.alunos= new ArrayList<>();
+        this.alunos = new ArrayList<>();
+        this.turmas = new ArrayList<>();
     }
 
     /***************************************************/
@@ -28,7 +30,9 @@ public class Sistema {
     public void novoAluno(Aluno a){
         this.alunos.add(a);
     }
-
+    public void novaTurma(Turma t){
+        this.turmas.add(t);
+    }
     /***************************************************/
 
     public Professor encontrarProfessor(String cpf) {
@@ -89,5 +93,24 @@ public class Sistema {
         }
     }
     /***************************************************/
-    public void listarTurmas() {
-        
+    public void  listarTurmas(){
+        if (this.turmas.size() > 0) {
+            System.out.println("turmas cadastradas:");
+            for (Turma t : this.turmas) {
+                String nome=t.getNomeTurma();
+                int ano=t.getAno();
+                int sem=t.getSem();
+                System.out.println("Medias da turma de " + nome+"("+ano+"/"+sem+"}");              
+                for(Aluno a:t.getAlunos()){
+                    String nomealuno=a.getNome();
+                    String matAluno=a.getMat();
+                    System.out.println(nomealuno + "{Matricula :"+matAluno+")"); 
+                }
+                
+            }
+        }
+        else {
+            System.out.println("Nenhum turma cadastrada até o momento.");
+        }
+    }
+}

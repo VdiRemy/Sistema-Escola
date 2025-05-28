@@ -27,6 +27,7 @@ class Trabalho extends Avaliacao {
         this.grupos = grupos;
     }
 
+    @Override
     public double nota(String cpf) {
         for (GrupoTrabalho grupo : grupos) {
             if (grupo.alunoNoGrupo(cpf)) {
@@ -34,5 +35,16 @@ class Trabalho extends Avaliacao {
             }
         }
         return 0; // Retorna 0 se o aluno não estiver em nenhum grupo
+    }
+
+    public Aluno getAluno(String cpf) {
+        for (GrupoTrabalho grupo : grupos) {
+            for (Aluno aluno : grupo.getAlunos()) {
+                if (aluno.getCpf().equals(cpf)) {
+                    return aluno; // Retorna o aluno se encontrado no grupo
+                }
+            }
+        }
+        return null; // Retorna null se o aluno não for encontrado
     }
 }

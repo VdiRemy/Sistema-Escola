@@ -170,6 +170,7 @@ public class Entrada {
             System.out.println("Erro: CPF ou matricula duplicada");
         }
     }
+
     private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) {
         String nome = this.lerLinha("Informe o nome desta avaliação: ");
         int dia = this.lerInteiro("digite o dia do trabalho: ");
@@ -181,11 +182,17 @@ public class Entrada {
             int valor_trabalho=this.lerInteiro("Digite o valor máximo desta avaliacao: ");
             int numero_integrantes = this.lerInteiro("Digite o número máximo de integrantes: ");
             int numero_grupos = this.lerInteiro("Digite o número de grupos: ");
-            ArrayList(GrupoTrabalho) grupo = new ArrayList<>();
+            //lista para armazenar os grupos de trabalho
+            ArrayList<GrupoTrabalho> grupos = new ArrayList<>();
             for (int i = 0; i < numero_grupos; i++) {
                 int numero_alunos_grupo = this.lerInteiro("Digite o número de alunos do grupo " + (i + 1) + ": ");
+                if (numero_alunos_grupo > numero_integrantes) {
+                    System.out.println("Número de alunos no grupo excede o máximo permitido. Tente novamente.");
+                    i--; // Repetir a leitura para o mesmo índice
+                    continue;
+                }
                 ArrayList<Aluno> grupo = new ArrayList<>();
-                for (int j = 0; j < numero_integrantes; j++) {
+                for (int j = 0; j < numero_alunos_grupo; j++) {
                     String mat = this.lerLinha("Digite a matricula do aluno " + (j + 1) +  ": ");
                     Aluno aluno = s.encontrarAlunoMat(mat);
                     if (aluno != null) {
@@ -194,12 +201,14 @@ public class Entrada {
                         System.out.println("Aluno com a matricula " + mat + " nao existe");
                         j--; // Repetir a leitura para o mesmo índice
                     }
-                
-                } 
-            return new Trabalho(nome,data,valor_trabalho,alunosTrabalho);
+                }
+                double nota = this.lerDouble("Digite a nota do grupo " + (i + 1) + ": ");
+                GrupoTrabalho grupoTrabalho = new GrupoTrabalho(grupo, nota);
+                grupos.add(grupoTrabalho);
         }
-        return null;
     }
+    return new Trabalho(nome, data, valor_trabalho, numero_integrantes, grupos);
+}
     
     /***************************************************/
     public void cadTurma(Sistema s) {
@@ -209,36 +218,28 @@ public class Entrada {
         int sem = this.lerInteiro("Digite o semestre da disciplina: ");
         String cpf=this.lerLinha("Digite o CPF do professor:");
         if (s.encontrarProfessor(cpf) != null) { // Garantindo que o não CPF esteja duplicado.
-            Professor prof=s.encontrarProfessor(cpf);
-            int qnt_alunos=this.lerInteiro("Digite a quantidade de alunos na disciplina: ");
-            int i=0;
-            ArrayList<Aluno> alunosTurma= new ArrayList<>();
-            while(i<qnt_alunos){        
-                String mat = this.lerLinha("Digite a matricula do aluno : ");
-                if(s.encontrarAlunoMat(mat)!=null){
-                    Aluno a=s.encontrarAlunoMat(mat);
-                    alunosTurma.add(a);
-                    i++;
-                }else{
-                    System.out.println("Aluno com a matricula "+mat+" nao existe");}
+           Professor prof=s.encontrarProfessor(cpf);
+           int qnt_alunos=this.lerInteiro("Digite a quantidade de alunos na disciplina: ");
+           int i=0;
+           ArrayList<Aluno> alunosTurma= new ArrayList<>();
+           while(i<qnt_alunos){        
+              String mat = this.lerLinha("Digite a matricula do aluno : ");
+              if(s.encontrarAlunoMat(mat)!=null){
+                  Aluno a=s.encontrarAlunoMat(mat);
+                  alunosTurma.add(a);
+                  i++;
+              }else{
+                  System.out.println("Aluno com a matricula "+mat+" nao existe");}
+           }int qnt_avs=this.lerInteiro("Digite a quantidade de avaliacoes na disciplina: ");
+            int op = this.menu_avs();
+            if(op==1){
+              Prova prova=this.lerProva(s, alunosTurma);
+              if(prova!=null){
+                Turma t= new Turma(nome, ano, sem, prof, alunosTurma, prova);
+                s.novaTurma(t);
+                  
+              }
             }
-            int qnt_avs=this.lerInteiro("Digite a quantidade de avaliacoes na disciplina: ");
-            int j=0;
-            while(j<qnt_avs){
-                int op = this.menu_avs();
-                if(op==1){
-                  Prova prova=this.lerProva(s, alunosTurma);
-                  if(prova!=null){
-                    Turma t= new Turma(nome, ano, sem, prof, alunosTurma, prova);
-                  }
-                }else if(op==2){
-                  Trabalho trabalho=this.lerTrabalho(s, alunosTurma);
-                  if(trabalho!=null){
-                    Turma t= new Turma(nome, ano, sem, prof, alunosTurma, trabalho);
-                  }
-                }
-                i++;
-            })
            
         }else{
            System.out.println("Professor não existe");
@@ -277,13 +278,5 @@ public class Entrada {
          return null;
       }
       /***************************************************/
-      /*ler grupo de trabalho*/
-      private 
-        
-        
-        
-
-       
-    
 
 }
