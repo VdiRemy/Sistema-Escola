@@ -1,16 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package escola;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Luma
- */
 public class Sistema {
     private List<Professor> profs;
     private List<Aluno> alunos;
@@ -94,23 +85,10 @@ public class Sistema {
     }
     /***************************************************/
     public void  listarTurmas(){
-        if (this.turmas.size() > 0) {
-            System.out.println("turmas cadastradas:");
+        if (!this.turmas.isEmpty()) {
             for (Turma t : this.turmas) {
-                String nome=t.getNomeTurma();
-                int ano=t.getAno();
-                int sem=t.getSem();
-                System.out.println("Medias da turma de " + nome+"("+ano+"/"+sem+"}");              
-                for(Aluno a:t.getAlunos()){
-                    String nomealuno=a.getNome();
-                    String matAluno=a.getMat();
-                    System.out.println(nomealuno + "{Matricula :"+matAluno+")"); 
-                }
-                
+                //usar metodo media de Turma
+                t.medias();}
             }
         }
-        else {
-            System.out.println("Nenhum turma cadastrada até o momento.");
-        }
-    }
 }

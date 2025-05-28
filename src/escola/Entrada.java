@@ -1,31 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package escola;
 
+package escola;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-
-/*
-
-+ cadTurma(s : Sistema)
-- lerLinha(msg : String) : String
-- lerInteiro(msg : String) : int
-- lerDouble(msg : String) : double
-- lerProf(s : Sistema) : Professor
-- lerAlunos(s : Sistema) : Aluno[ ]
-- lerAlunoProva(s : Sistema, a : Aluno, nQuestoes : int) : AlunoProva
-- lerProva(s : Sistema, alunos : Aluno[ ]) : Prova
-- lerGrupoTrabalho(s : Sistema) : GrupoTrabalho
-- lerTrabalho(s : Sistema, alunos : Aluno[ ]) : Trabalho
-- lerAvaliacoes(s : Sistema, alunos : Aluno[ ], nAvaliacoes : int) : Avaliacao[ ]
- */
-
 /**
  * Classe com as rotinas de entrada e saída do projeto
  * @author Hilario Seibel Junior, Luma e remerson
@@ -171,7 +150,7 @@ public class Entrada {
         }
     }
 
-    private Trabalho lerTrabalho(Sistema s, List<Aluno> alunos) {
+    private Trabalho lerTrabalho(Sistema s, ArrayList<Aluno> alunos) {
         String nome = this.lerLinha("Informe o nome desta avaliação: ");
         int dia = this.lerInteiro("digite o dia do trabalho: ");
         int mes = this.lerInteiro("digite o mes do trabalho: ");
@@ -206,8 +185,11 @@ public class Entrada {
                 GrupoTrabalho grupoTrabalho = new GrupoTrabalho(grupo, nota);
                 grupos.add(grupoTrabalho);
         }
+        return new Trabalho(nome, data, valor_trabalho, numero_integrantes, grupos);
+    } else {
+        System.out.println("A data do trabalho deve ser posterior a hoje.");
+        return null;
     }
-    return new Trabalho(nome, data, valor_trabalho, numero_integrantes, grupos);
 }
     
     /***************************************************/
@@ -217,32 +199,40 @@ public class Entrada {
         int ano = this.lerInteiro("Digite o ano da disciplina: ");
         int sem = this.lerInteiro("Digite o semestre da disciplina: ");
         String cpf=this.lerLinha("Digite o CPF do professor:");
-        if (s.encontrarProfessor(cpf) != null) { // Garantindo que o não CPF esteja duplicado.
-           Professor prof=s.encontrarProfessor(cpf);
+        Professor prof=s.encontrarProfessor(cpf);
+        if (prof != null) {
            int qnt_alunos=this.lerInteiro("Digite a quantidade de alunos na disciplina: ");
            int i=0;
            ArrayList<Aluno> alunosTurma= new ArrayList<>();
            while(i<qnt_alunos){        
               String mat = this.lerLinha("Digite a matricula do aluno : ");
-              if(s.encontrarAlunoMat(mat)!=null){
-                  Aluno a=s.encontrarAlunoMat(mat);
+              Aluno a=s.encontrarAlunoMat(mat);
+              if(a !=null){
                   alunosTurma.add(a);
                   i++;
               }else{
-                  System.out.println("Aluno com a matricula "+mat+" nao existe");}
-           }int qnt_avs=this.lerInteiro("Digite a quantidade de avaliacoes na disciplina: ");
-            int op = this.menu_avs();
-            if(op==1){
-              Prova prova=this.lerProva(s, alunosTurma);
-              if(prova!=null){
-                Turma t= new Turma(nome, ano, sem, prof, alunosTurma, prova);
-                s.novaTurma(t);
-                  
-              }
+                  System.out.println("Aluno com a matricula "+mat+" nao existe");
+                }
             }
-           
-        }else{
-           System.out.println("Professor não existe");
+            Turma t = new Turma(nome, ano, sem, prof, alunosTurma);
+            int qnt_avs=this.lerInteiro("Digite a quantidade de avaliacoes na disciplina: ");
+            int j=0;
+            while(j<qnt_avs){
+                int op = this.menu_avs();
+                if(op==1){
+                  Prova prova=this.lerProva(s, alunosTurma);
+                  if(prova!=null){
+                    t.adicionarAvaliacao(prova);
+                  }
+                }else if(op==2){
+                  Trabalho trabalho=this.lerTrabalho(s, alunosTurma);
+                  if(trabalho!=null){
+                    t.adicionarAvaliacao(trabalho);
+                  }
+                }
+                j++;
+            }
+            s.novaTurma(t);
         }
     }
         
@@ -250,7 +240,7 @@ public class Entrada {
       public AlunoProva LerAlunoProva(Sistema s,Aluno a,int nQuestoes){
           ArrayList<Integer> alunonotas= new ArrayList<>();
           for(int i=0;i<nQuestoes;i++){
-              int nota = this.lerInteiro("Nota de "+ a.getNome() +"na questão " +(i+1)+ ":");
+              int nota = this.lerInteiro("Nota de "+ a.getNome() +" na questão " +(i+1)+ ":");
               alunonotas.add(nota);
           }
            

@@ -1,14 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package escola;
-
-/**
- *
- * @author Luma
- */
-
+import java.util.ArrayList;
 //tem que herdar de Avaliacao
 class Trabalho extends Avaliacao {
     /**
@@ -19,9 +10,9 @@ class Trabalho extends Avaliacao {
      * cpf.
      */
     private int nIntegrantes;
-    private GrupoTrabalho[] grupos;
+    private ArrayList<GrupoTrabalho> grupos;
 
-    public Trabalho(String nome, Data dtAplic, double valor, int nIntegrantes, GrupoTrabalho[] grupos) {
+    public Trabalho(String nome, Data dtAplic, double valor, int nIntegrantes, ArrayList<GrupoTrabalho> grupos) {
         super(nome, dtAplic, valor);
         this.nIntegrantes = nIntegrantes;
         this.grupos = grupos;

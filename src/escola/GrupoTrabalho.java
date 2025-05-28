@@ -1,10 +1,6 @@
 package escola;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
 /*
- *
  *A classe GrupoTrabalho armazena o array de alunos do grupo e a nota do grupo. Há um
 método para verificar se um aluno pertence ao grupo, dado seu cpf.
  */
